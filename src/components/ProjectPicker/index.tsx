@@ -15,7 +15,11 @@ const ProjectsButton = styled(ButtonBase)(({ theme }) => ({
     height: 48
 }));
 
-export const ProjectPicker = () => {
+interface IProjectPickerProps {
+    title?: string | React.ReactNode;
+}
+
+export const ProjectPicker: React.FC<IProjectPickerProps> = ({ title }) => {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -33,7 +37,9 @@ export const ProjectPicker = () => {
                 aria-expanded={open ? 'true' : undefined}
             >
                 <div>
-                    <Typography>Andrei Sukhomozgii</Typography>
+                    <Typography paragraph variant='h6' m={0}>
+                        {title}
+                    </Typography>
                     <Typography variant='caption' noWrap>
                         Testlio Sandbox Playground
                     </Typography>
