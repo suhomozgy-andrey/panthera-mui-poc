@@ -1,5 +1,7 @@
 import React from 'react';
 import { Link as NavLink } from 'react-router-dom';
+import MenuIcon from '@mui/icons-material/Menu';
+
 import { AppContext, TAppContext } from '../../context/AppContext';
 import { ProjectPicker } from '../../components/ProjectPicker';
 import Grid from '@mui/material/Unstable_Grid2';
@@ -7,6 +9,8 @@ import Link from '@mui/material/Link';
 import { UserMenu } from '../../components/UserMenu';
 import { ContextualNavigation } from '../../components/ContextualNavigation';
 import { MainNavigation } from '../../components/MainNavigation';
+import Stack from '@mui/material/Stack';
+import { Box, AppBar, Toolbar, IconButton, Typography } from '@mui/material';
 
 interface IDefaultLayoutProps {
     children: React.ReactNode;
@@ -16,13 +20,15 @@ interface IDefaultLayoutProps {
     };
     contentTitle?: React.ReactNode;
     contentTitleText?: String;
+    contentTitleActions?: React.ReactNode;
 }
 
 export const DefaultLayout = ({
     children,
     contextualNavigation,
     contentTitle,
-    contentTitleText
+    contentTitleText,
+    contentTitleActions
 }: IDefaultLayoutProps) => {
     const { title, navigation } = contextualNavigation ?? {};
 
@@ -57,7 +63,7 @@ export const DefaultLayout = ({
                     <UserMenu />
                 </Grid>
             </Grid>
-            <Grid container columnSpacing={2} height='100%' columns={2} flexGrow={1} m={0}>
+            <Grid container columnSpacing={0} height='100%' columns={2} flexGrow={1} m={0}>
                 {contextualNavigation && (
                     <Grid width={240} bgcolor='#f9fafb' height='100%' container spacing={0} flexDirection='column'>
                         <Grid py={2.5} px={2}>
@@ -70,15 +76,42 @@ export const DefaultLayout = ({
                 )}
                 <Grid flexGrow={1}>
                     {contentTitle ?? (
-                        <div className='tw-px-4 tw-py-[22px] tw-flex tw-items-center'>
-                            <div className='tw-mr-[22px] tw-cursor-pointer' onClick={onHamburgerClick}>
-                                &times;
-                            </div>
-                            <span className='tw-block tw-text-2xl'>{contentTitleText}</span>
-                        </div>
+                        <Box sx={{ flexGrow: 1 }}>
+                            <AppBar
+                                position='static'
+                                color='transparent'
+                                sx={{
+                                    boxShadow: 'none'
+                                }}
+                            >
+                                <Toolbar
+                                    sx={{
+                                        paddingLeft: 2,
+                                        paddingRight: 2,
+                                        minHeight: `80px !important`
+                                    }}
+                                    disableGutters
+                                >
+                                    <IconButton edge='start' color='inherit' aria-label='menu' sx={{ mr: 1 }}>
+                                        <MenuIcon />
+                                    </IconButton>
+                                    <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
+                                        {contentTitleText}
+                                    </Typography>
+                                    {contentTitleActions}
+                                </Toolbar>
+                            </AppBar>
+                        </Box>
                     )}
 
-                    <div className='tw-overflow-auto tw-px-4 tw-pt-5 tw-pb-5 tw-h-full'>{children}</div>
+                    <Stack
+                        sx={{
+                            paddingLeft: 2,
+                            paddingRight: 2
+                        }}
+                    >
+                        {children}
+                    </Stack>
                 </Grid>
             </Grid>
         </Grid>
